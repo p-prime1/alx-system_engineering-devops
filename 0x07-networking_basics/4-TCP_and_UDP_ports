@@ -1,2 +1,2 @@
-#!/bin/sh
-ss -tuln
+#!/usr/bin/env bash
+ss -tuln  ##Display listening ports
