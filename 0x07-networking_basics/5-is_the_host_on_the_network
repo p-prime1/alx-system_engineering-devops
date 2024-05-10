@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 ping -c 5 $1
 echo "Usage: 5-is_the_host_on_the_network {$1}"
 
