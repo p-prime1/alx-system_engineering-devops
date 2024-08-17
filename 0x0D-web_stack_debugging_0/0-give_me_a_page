@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 #Fixing the server by running the the docker image and restarting apache
-docker run  --name jackson -p 8080:80 -d holbertonschool/265-0
-docker exec -ti jackson apachectl start
-exit
+echo "ServerName localhost" >> /etc/apache2/apache2.conf
+apachectl start
