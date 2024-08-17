@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#Fixing the server by running the the docker image and restarting apache
+apachectl restart
