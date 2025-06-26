@@ -1,0 +1,78 @@
+﻿Infrastructure Workflow
+🔹 DNS and HTTPS Traffic
+When a user types https://www.foobar.com into their browser:
+1. A DNS query resolves www.foobar.com to the public IP of the load balancer.
+
+2. The browser establishes an HTTPS connection, ensuring the request is encrypted using an SSL/TLS certificate installed on the load balancer.
+
+3. The load balancer routes the request to one of the backend servers using a Round Robin algorithm.
+
+4. Each server runs Nginx as a web server and forwards dynamic requests to the application logic, which may read from or write to the MySQL database cluster.
+
+New Security and Monitoring Components
+ 1. Firewalls (3 Total)
+   * Firewall 1: Sits in front of the load balancer to block unauthorized public access.
+
+   * Firewall 2: Between the load balancer and backend servers, restricting internal traffic to specific ports and services (e.g., only HTTP, HTTPS, and app-layer communication).
+
+   * Firewall 3: Protects the database layer from any non-application-level connections.
+
+ What are firewalls for?
+ Firewalls control incoming and outgoing traffic based on security rules. They prevent unauthorized access, reduce attack surfaces, and isolate internal services.
+2. SSL Certificate (HTTPS)
+      * An SSL/TLS certificate is installed at the load balancer level to serve www.foobar.com securely.
+
+      * This ensures data sent between the client and the server is encrypted and tamper-proof.
+
+Why is the traffic served over HTTPS?
+         * Protects user privacy and credentials
+
+         * Prevents man-in-the-middle attacks
+
+         * Increases user trust and SEO rankings
+
+         * Required for modern web features (e.g., service workers)
+
+3. Monitoring Clients (Data Collectors)
+            * Monitoring agents (e.g., for Sumo Logic, Prometheus, or Datadog) are installed on:
+
+               * Each backend server
+
+               * The load balancer
+
+These agents collect system metrics and logs (CPU usage, memory, traffic stats, error rates) and forward them to a centralized dashboard.
+What is monitoring used for?
+                  * Detect system failures before they impact users
+
+                  * Visualize load trends and forecast scaling needs
+
+                  * Debug application or network issues
+
+                  * Ensure SLAs and uptime targets are met
+
+How does the monitoring tool collect data?
+ Agents collect:
+                     * System-level metrics via /proc or OS APIs
+
+                     * Application logs from standard output or files
+
+                     * Web server stats via plugins or Nginx status modules
+
+                     * Custom metrics via APIs or SDKs
+
+How to Monitor Web Server QPS (Queries Per Second)
+To track QPS on Nginx:
+                        * Enable the Nginx status module (stub_status)
+
+                        * Use a monitoring agent (like Prometheus Nginx exporter) to scrape metrics
+
+                        * Push metrics to your monitoring service
+
+                        * Create a dashboard showing requests per second over time
+
+This helps you:
+                           * Spot traffic spikes
+
+                           * Detect DoS patterns
+
+                           * Optimize load balancing
