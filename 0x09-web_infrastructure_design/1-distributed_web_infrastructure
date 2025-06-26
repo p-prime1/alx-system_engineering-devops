@@ -1,0 +1,55 @@
+# Modern Web Infrastructure Design with two Backend Server
+
+In this article we would look into a web infrastructure that consist of:
+
+* Two Backend Servers  
+* 1 Web servers  
+* Load Balancer  
+* Application files/codebase  
+* Database
+
+## DNS Resolution
+
+When a user enters a domain name [foobar.com](http://foobar.com), a DNS query resolves this domain name into an IP address. This IP address points the browser to the server.
+
+## Load Balancer
+
+Like a traffic light, a load balancer manages traffic (request) and into the servers. It determines which server gets to handle the received request. One algorithm the load balancer uses is the Round Robin. This forwards requests sequentially as they are received. This helps avoid overwhelming the servers. This is used mostly when the servers has equal resources.
+
+## Web Server and Application Layer
+
+Every server runs a web server (Nginx in this case) to handle incoming HTTP requests.  
+Dependin on the request the application layer (Which is run by the codebase) generates either a static files or Dynamic. The application layer may need to interact with the database to read or write data
+
+## 
+
+The server can implement either an Active-Active or an Active-Passive Architecture. In active active both servers are online and handle requests, in Active-Passive One server remains online while the other remains on standby. Active Active is usually preferred for better load distribution and uptime.
+
+## Challenges
+
+While this architecture is far more robust than a single-server setup, it is not without limitations:
+
+### 🔸 Single Points of Failure (SPOF)
+
+* Load Balancer: If there is no backup load balancer, the entire system can go down if it fails.
+
+* Primary Database: If the primary node goes offline without automatic failover, writes will fail.
+
+### 🔸 Security Gaps
+
+* No HTTPS: Without TLS/SSL, data in transit is vulnerable to interception.
+
+* No Firewalls: Unrestricted ports can be exploited by attackers or bots.
+
+### 🔸 Lack of Monitoring
+
+Without monitoring we wont be alerted to:
+
+* Server overload
+
+* Failing replicas
+
+* High memory/CPU usage
+
+* Unauthorized access attempts
+
